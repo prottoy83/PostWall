@@ -16,7 +16,7 @@ const Show = (e) => {
             <div className='flex flex-col items-center mt-10 space-y-4 pb-4'>
             {posts.map(
                 (post) => (
-                <Post title={post.title} key={post._id} date={post.createdAt} content={post.content} />
+                <Post title={post.title} key={post._id} date={post.createdAt} content={post.content} image={post.image} />
                 
                 )
             )}

@@ -1,0 +1,11 @@
+input[type="file"] {
+    display:none;
+}
+.file-upload{
+    border: 1px solid #ccc;
+    display: block;
+    height: 40px;
+    padding: 6px 12px;
+    cursor: pointer;
+    margin-right: 10px;
+}

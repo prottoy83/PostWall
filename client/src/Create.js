@@ -6,7 +6,8 @@ const Create = (props) => {
 
     const [formData, setFormData] = useState({
         title: '',
-        content: ''
+        content: '',
+        image: null
     });
 
     const navigate = useNavigate();
@@ -14,11 +15,25 @@ const Create = (props) => {
         setFormData({ ...formData, [e.target.name]: e.target.value});
     }
 
+    const [image, setImage ] = useState();
+    //const image = 'test.jpg'
+
+    const hndPhoto = (e) => {
+        setImage(e.target.files[0]);
+        setFormData({...formData, image: e.target.files[0]})
+    }
+
     const subForm = async (e) =>{
         e.preventDefault()
 
         try{
-            await axios.post('http://localhost:3001/page', formData)
+            //console.log(formData)
+
+            await axios.post('http://localhost:3001/page', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
             navigate('/')
 
         }
@@ -35,7 +50,7 @@ const Create = (props) => {
             <button className='bg-blue-400 text-white w-10 h-10 rounded-sm' onClick={props.func}>←</button>
             </div>
 
-            <div className='flex flex-col items-center mt-10 space-y-4'>
+            <div className='flex flex-col items-center mt-8 space-y-2'>
                 <form className="min-w-96 w-6/12 p-10 border rounded-lg block " onSubmit={subForm}>
                     <h1 className="font-semibold text-4xl text-gray-700 my-2">Post Details</h1>
                     <div className="my-8 w-full">
@@ -46,7 +61,18 @@ const Create = (props) => {
                         <h4 className="font-medium text-gray-700 my-1 mx-2">Content</h4>
                         <textarea name="content" type="text" placeholder="Enter A title" className="border h-96 w-full p-4 bg-slate-50" onChange={hndChange}/>
                     </div>
-                    <button className="bg-orange-600 text-gray-100 p-3 rounded-md " type="submit">Submit</button>
+                    <div className='flex justify-evenly'>
+
+                        <div className="flex ">
+                            <label className='file-upload'><p>Upload Image</p><input type="file" accept=".png, .jpg, .jpeg, .webp" name="image" onChange={hndPhoto}/></label>
+                            { image != null ? 
+                                <image src={URL.createObjectURL(image)} width={100}/> 
+                                : <p></p>
+                            }
+                        </div>
+                        <button className="bg-orange-600 text-gray-100 p-3 rounded-md h-12" type="submit">Submit</button>
+
+                    </div>
                 </form>
             </div>
         </content>
