@@ -13,6 +13,19 @@ router.get('/', async(req,res) => {
     }
 })
 
+router.get('/:_id', async(req,res) => {
+    const search = req.params;
+    try{
+        const post = await Post.find({
+            _id : search
+        })
+        res.status(200).json(post)
+    }catch{
+        res.status(404).json({message: 'Data doesnt exist'})
+
+    }
+})
+
 const storage = multer.diskStorage({
     destination: (req,file, cb) => {
         cb(null, 'uploads/')
@@ -38,4 +51,16 @@ router.post('/', upload.single('image'), async(req,res) => {
     }
 })
 
+router.delete('/:_id', async(req,res) => {
+    const search = req.params;
+
+    try{
+        const post = { _id: search }
+        const result = await Post.deleteOne(post)
+
+        res.status(201).json(result)
+    }catch{
+        res.status(401).json({message: 'Failed'})
+    }
+})
 export default router;
